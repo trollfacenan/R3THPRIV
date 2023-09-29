@@ -1,7 +1,7 @@
 -- I DID NOT MAKE THIS SCRIPT ALL CREDITS GOES TO THE OWNER
 
-_G.flingloop = true
-while _G.flingloop do
+getgenv().flingloop = true
+while getgenv().flingloop do
 function flingloopfix()
 
 local Targets = {FLINGTARGET} -- "All", "Target Name"
