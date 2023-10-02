@@ -10,7 +10,6 @@
     .gg/z2E423Zv38
 
     Credits:
-        asunax#1746
         pethicial
 ]]
 
