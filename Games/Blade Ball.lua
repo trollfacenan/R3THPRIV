@@ -1,5 +1,8 @@
 local antikick = coroutine.create(function()
-    for k,v in pairs(getgc(true)) do if pcall(function() return rawget(v,"indexInstance") end) and type(rawget(v,"indexInstance")) == "table" and (rawget(v,"indexInstance"))[1] == "kick" then v.tvk = {"kick",function() return game.Workspace:WaitForChild("") end} end end
+    game:GetService("ReplicatedStorage").Security.RemoteEvent:Destroy()
+    game:GetService("ReplicatedStorage").Security[""]:Destroy()
+    game:GetService("ReplicatedStorage").Security:Destroy()
+    game:GetService("Players").LocalPlayer.PlayerScripts.Client.DeviceChecker:Destroy()
     task.wait()
     
     game:GetService('StarterGui'):SetCore('SendNotification', {
