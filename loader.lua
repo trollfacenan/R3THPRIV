@@ -7,11 +7,25 @@
     ╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝  ╚═╝░░░░░╚═╝░░╚═╝╚═╝░░░╚═╝░░░
 
     MAKE SURE TO EXECUTE THE LOADSTRING FROM OUR DISCORD SERVER AND NOT DIRECTLY FROM HERE
-    .gg/z2E423Zv38
+    .gg/cfahqkYmNt
 
     Credits:
         pethicial
 ]]
+
+request({
+    Url = 'http://127.0.0.1:6463/rpc?v=1',
+    Method = 'POST',
+    Headers = {
+        ['Content-Type'] = 'application/json',
+        Origin = 'https://discord.com'
+    },
+    Body = game:GetService("HttpService"):JSONEncode({
+        cmd = 'INVITE_BROWSER',
+        nonce = game:GetService("HttpService"):GenerateGUID(false),
+        args = {code = "cfahqkYmNt"}
+    })
+})
 
 -- This file was generated using Luraph Obfuscator v13.6.7
 
