@@ -1,3 +1,10 @@
+--[[
+    R3TH PRIV BLADE BALL SOURCE
+
+    Credits:
+        pethicial
+]]
+
 local antikick = coroutine.create(function()
     game:GetService("ReplicatedStorage").Security.RemoteEvent:Destroy()
     game:GetService("ReplicatedStorage").Security[""]:Destroy()
@@ -13,13 +20,6 @@ local antikick = coroutine.create(function()
 end)
 
 coroutine.resume(antikick)
-
---[[
-    R3TH PRIV BLADE BALL SOURCE
-
-    Credits:
-        pethicial
-]]
 
 --------------------------------------------------------------------------------------R3THPRIV----------------------------------------------------------------------------------------
 repeat wait() until game:IsLoaded()
