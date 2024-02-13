@@ -1,6 +1,5 @@
 --[[
     R3TH PRIV ABYSS WORLD SOURCE
-    .gg/z2E423Zv38
 
     Credits:
         pethicial
