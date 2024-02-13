@@ -7,7 +7,6 @@
     ╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝  ╚═╝░░░░░╚═╝░░╚═╝╚═╝░░░╚═╝░░░
 
     MAKE SURE TO EXECUTE THE LOADSTRING FROM OUR DISCORD SERVER AND NOT DIRECTLY FROM HERE
-    .gg/cfahqkYmNt
 
     Credits:
         pethicial
