@@ -61,7 +61,7 @@ getgenv().p3mCtZagW4GT5chFsS8RdNvQYjPx7qnBVXMrLK6Du2JEe = true
 for i,v in pairs(game.ReplicatedStorage:GetDescendants())do
     if v.Name == "OfficialLobby" then
         map = "Lobby"
-    elseif v.Name == "Map" then
+    elseif v.Name == "Map" and v.ClassName == "StringValue" then
         map = v.Value
         break
     end
