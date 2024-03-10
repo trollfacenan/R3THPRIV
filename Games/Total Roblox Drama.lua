@@ -1,5 +1,8 @@
 --[[
     R3TH PRIV TOTAL ROBLOX DRAMA SOURCE
+    
+    You cant use any of the below unless given permission.
+    .gg/z2E423Zv38
 
     Credits:
         pethicial
@@ -58,8 +61,9 @@ getgenv().p3mCtZagW4GT5chFsS8RdNvQYjPx7qnBVXMrLK6Du2JEe = true
 for i,v in pairs(game.ReplicatedStorage:GetDescendants())do
     if v.Name == "OfficialLobby" then
         map = "Lobby"
-    elseif v.Name == "Map" and v.ClassName == "StringValue" then
+    elseif v.Name == "Map" then
         map = v.Value
+        break
     end
 end
 
