@@ -15,11 +15,11 @@
 local StarterGui = game:GetService("StarterGui")
 StarterGui:SetCore("SendNotification", {
     Title = "R3TH PRIV";
-    Text = "Join the new discord server for updates pethicial.com and support!";
-    Duration = 5;
+    Text = "Join the new discord server for updates and support! pethicial.com";
+    Duration = 10;
 }) 
 
-print("[ R3TH PRIV ]: Join the new discord server for updates pethicial.com and support!")
+print("[ R3TH PRIV ]: Join the new discord server for updates and support! pethicial.com")
 
 -- This file was generated using Luraph Obfuscator v13.6.7
 
