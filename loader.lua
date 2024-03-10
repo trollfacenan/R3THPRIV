@@ -15,7 +15,7 @@
 local StarterGui = game:GetService("StarterGui")
 StarterGui:SetCore("SendNotification", {
     Title = "R3TH PRIV";
-    Text = "Join the new discord server for updates https://pethicial.com";
+    Text = "Join the new discord server for updates pethicial.com";
     Duration = 5;
 }) 
 
