@@ -8,53 +8,6 @@
 --------------------------------------------------------------------------------------R3THPRIV----------------------------------------------------------------------------------------
 repeat wait() until game:IsLoaded()
 
-if zac5mDuh2AXjsBebYVg6ZSMEf4yxQkw8dRLNGKHF7J9CPT3qWp ~= true then
-    print("[ R3TH PRIV ]: Stop attempting to directly execute the script or you will be banned.")
-    game.Players.LocalPlayer:Kick("[ R3TH PRIV ]: Stop attempting to directly execute the script or you will be banned.")
-    local function loadscript()
-        while true do
-            loadscript()
-        end
-    end
-    
-    while true do
-        spawn(loadscript)
-    end
-    return
-end
-
-if WVryGeXr38ZZtdJWtrBtyeEKdm9Kkweaxm7tnUpuCcH835AQN2aLxV2NeG76kYZuWnCZz4yRr == nil then
-    print("[ R3TH PRIV ]: Stop attempting to directly execute the script or you will be banned.")
-    game.Players.LocalPlayer:Kick("[ R3TH PRIV ]: Stop attempting to directly execute the script or you will be banned.")
-    local function loadscript()
-        while true do
-            loadscript()
-        end
-    end
-    
-    while true do
-        spawn(loadscript)
-    end
-    return
-end
-
-if T6FVH3SyPgXtYuZAzQCRJU7Ms2m5b9rGNLhkcnevfqDdKxB then
-    print("[ R3TH PRIV ]: Stop attempting to directly execute the script or you will be banned.")
-    game.Players.LocalPlayer:Kick("[ R3TH PRIV ]: Stop attempting to directly execute the script or you will be banned.")
-    local function loadscript()
-        while true do
-            loadscript()
-        end
-    end
-    
-    while true do
-        spawn(loadscript)
-    end
-    return
-end
-
-getgenv().T6FVH3SyPgXtYuZAzQCRJU7Ms2m5b9rGNLhkcnevfqDdKxB = true
-
 for _,obj in next, game.Players.LocalPlayer.Backpack.Toys:GetChildren() do
     if obj.Name == "SprayPaint" then
         doeshavespraypaint = true
