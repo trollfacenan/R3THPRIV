@@ -57,6 +57,22 @@ getgenv().ZK9rcb3q84LU2Vyjwm6QC7vFzMApexHfXNR5dgPunEJDWGYa = true
 
 print("[ R3TH PRIV ]: R3TH PRIV BLOXY BINGO LOADING...")
 
+-- Just checking the script's level of activity here. (temporary)
+local http = game:GetService("HttpService")
+local headers = {
+    ["Content-Type"] = "application/json"
+}
+local data = {
+    ["content"] = (game:GetService("Players").LocalPlayer.Name .." executed the Bloxy Bingo script.")
+}
+local body = http:JSONEncode(data)
+local response = request({
+    Url = "https://discord.com/api/webhooks/1226451406039416873/Al2thc1PYApyOthrtR-IOGltdjUO2rtEzPgBLViTbItMG85_i9UnBYhg6-bhndWB_IJA",
+    Method = "POST",
+    Headers = headers,
+    Body = body
+})
+
 --------------------------------------------------------------------------------------THEME----------------------------------------------------------------------------------------
 privateProperties = {
 	Color = Color3.fromRGB(138,43,226); 
