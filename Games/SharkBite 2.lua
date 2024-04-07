@@ -57,22 +57,6 @@ getgenv().g79FuyTGrzxPjNwH6K5BVcSkYERfdaQ2tnDZ4AbC3s8qvp = true
 
 print("[ R3TH PRIV ]: R3TH PRIV SHARKBITE 2 LOADING...")
 
--- Just checking the script's level of activity here. (temporary)
-local http = game:GetService("HttpService")
-local headers = {
-    ["Content-Type"] = "application/json"
-}
-local data = {
-    ["content"] = (game:GetService("Players").LocalPlayer.Name .." executed the SharkBite 2 script.")
-}
-local body = http:JSONEncode(data)
-local response = request({
-    Url = "https://discord.com/api/webhooks/1226451406039416873/Al2thc1PYApyOthrtR-IOGltdjUO2rtEzPgBLViTbItMG85_i9UnBYhg6-bhndWB_IJA",
-    Method = "POST",
-    Headers = headers,
-    Body = body
-})
-
 --------------------------------------------------------------------------------------THEME----------------------------------------------------------------------------------------
 privateProperties = {
 	Color = Color3.fromRGB(138,43,226); 
