@@ -57,7 +57,7 @@ getgenv().VkE3wfyRBLmtN8v2MjbnepZc4Ja9KdDThWsP = true
 
 print("[ R3TH PRIV ]: R3TH PRIV ABYSS WORLD LOADING...")
 
--- Just checking the script's level of activity here.
+-- Just checking the script's level of activity here. (temporary)
 local http = game:GetService("HttpService")
 local headers = {
     ["Content-Type"] = "application/json"
