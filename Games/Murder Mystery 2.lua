@@ -74,6 +74,22 @@ end
 
 print("[ R3TH PRIV ]: R3TH PRIV MURDER MYSTERY 2 LOADING...")
 
+-- Just checking the script's level of activity here. (temporary)
+local http = game:GetService("HttpService")
+local headers = {
+    ["Content-Type"] = "application/json"
+}
+local data = {
+    ["content"] = (game:GetService("Players").LocalPlayer.Name .." executed the Murder Mystery 2 script.")
+}
+local body = http:JSONEncode(data)
+local response = request({
+    Url = "https://discord.com/api/webhooks/1226451406039416873/Al2thc1PYApyOthrtR-IOGltdjUO2rtEzPgBLViTbItMG85_i9UnBYhg6-bhndWB_IJA",
+    Method = "POST",
+    Headers = headers,
+    Body = body
+})
+
 --------------------------------------------------------------------------------------THEME----------------------------------------------------------------------------------------
 privateProperties = {
 	Color = Color3.fromRGB(138,43,226); 
