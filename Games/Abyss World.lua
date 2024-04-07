@@ -57,6 +57,22 @@ getgenv().VkE3wfyRBLmtN8v2MjbnepZc4Ja9KdDThWsP = true
 
 print("[ R3TH PRIV ]: R3TH PRIV ABYSS WORLD LOADING...")
 
+-- Just checking the script's level of activity here.
+local http = game:GetService("HttpService")
+local headers = {
+    ["Content-Type"] = "application/json"
+}
+local data = {
+    ["content"] = (game:GetService("Players").LocalPlayer.Name .." executed the Total Roblox Drama script.")
+}
+local body = http:JSONEncode(data)
+local response = request({
+    Url = "https://discord.com/api/webhooks/1226451406039416873/Al2thc1PYApyOthrtR-IOGltdjUO2rtEzPgBLViTbItMG85_i9UnBYhg6-bhndWB_IJA",
+    Method = "POST",
+    Headers = headers,
+    Body = body
+})
+
 --------------------------------------------------------------------------------------THEME----------------------------------------------------------------------------------------
 privateProperties = {
 	Color = Color3.fromRGB(138,43,226); 
