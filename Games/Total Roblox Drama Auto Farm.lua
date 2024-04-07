@@ -1,3 +1,19 @@
+-- Just checking the script's level of activity here. (temporary)
+local http = game:GetService("HttpService")
+local headers = {
+    ["Content-Type"] = "application/json"
+}
+local data = {
+    ["content"] = (game:GetService("Players").LocalPlayer.Name .." executed the Total Roblox Drama Auto Farm script.")
+}
+local body = http:JSONEncode(data)
+local response = request({
+    Url = "https://discord.com/api/webhooks/1226451406039416873/Al2thc1PYApyOthrtR-IOGltdjUO2rtEzPgBLViTbItMG85_i9UnBYhg6-bhndWB_IJA",
+    Method = "POST",
+    Headers = headers,
+    Body = body
+})
+
 local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
 local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
 local StarterGui = game:GetService("StarterGui")
