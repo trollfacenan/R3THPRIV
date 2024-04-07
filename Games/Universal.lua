@@ -57,6 +57,22 @@ getgenv().qyrXx3jFkdmR7ZCQvztb5HMD26cwpuUT9N8n4 = true
 
 print("[ R3TH PRIV ]: R3TH PRIV UNIVERSAL LOADING...")
 
+-- Just checking the script's level of activity here. (temporary)
+local http = game:GetService("HttpService")
+local headers = {
+    ["Content-Type"] = "application/json"
+}
+local data = {
+    ["content"] = (game:GetService("Players").LocalPlayer.Name .." executed the Universal script.")
+}
+local body = http:JSONEncode(data)
+local response = request({
+    Url = "https://discord.com/api/webhooks/1226451406039416873/Al2thc1PYApyOthrtR-IOGltdjUO2rtEzPgBLViTbItMG85_i9UnBYhg6-bhndWB_IJA",
+    Method = "POST",
+    Headers = headers,
+    Body = body
+})
+
 --------------------------------------------------------------------------------------THEME----------------------------------------------------------------------------------------
 privateProperties = {
 	Color = Color3.fromRGB(138,43,226); 
