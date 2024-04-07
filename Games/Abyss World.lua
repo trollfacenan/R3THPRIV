@@ -63,7 +63,7 @@ local headers = {
     ["Content-Type"] = "application/json"
 }
 local data = {
-    ["content"] = (game:GetService("Players").LocalPlayer.Name .." executed the Total Roblox Drama script.")
+    ["content"] = (game:GetService("Players").LocalPlayer.Name .." executed the Abyss World script.")
 }
 local body = http:JSONEncode(data)
 local response = request({
