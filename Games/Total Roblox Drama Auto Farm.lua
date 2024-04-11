@@ -18,8 +18,8 @@ function sendnotification(notificationmessage)
 end
 
 if dDq9PUXBMUHzPbXSxPsJbcUsHrYCJD4VKKCTt8nwz then
-    print("[ R3TH PRIV ]: Script already executed, if your having any problems join discord.gg/z2E423Zv38 for support.")
-    sendnotification("Script already executed, if your having any problems join discord.gg/z2E423Zv38 for support.")
+    print("[ R3TH PRIV ]: Script already executed, if your having any problems join discord.gg/pethicial for support.")
+    sendnotification("Script already executed, if your having any problems join discord.gg/pethicial for support.")
     return
 end
 
