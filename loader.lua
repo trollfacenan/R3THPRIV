@@ -15,11 +15,11 @@
 local StarterGui = game:GetService("StarterGui")
 StarterGui:SetCore("SendNotification", {
     Title = "R3TH PRIV";
-    Text = "R3TH PRIV V2 coming out soon join for updates! https://discord.gg/C2n4XVKaDY";
+    Text = "R3TH PRIV V2 coming out soon join for updates! https://discord.gg/pethicial";
     Duration = 10;
 }) 
 
-print("[ R3TH PRIV ]: R3TH PRIV V2 coming out soon join for updates! https://discord.gg/C2n4XVKaDY")
+print("[ R3TH PRIV ]: R3TH PRIV V2 coming out soon join for updates! https://discord.gg/pethicial")
 
 -- This file was generated using Luraph Obfuscator v13.6.7
 
