@@ -85,7 +85,7 @@ local NotificationHolder = loadstring(game:HttpGet("https://raw.githubuserconten
 local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/R3TH-PRIV/R3THPRIV/main/OtherScripts/VenyxUI.lua"))()
-local R3TH = library.new("R3TH PRIV                                                                            .gg/pethicial", 5013109572)
+local R3TH = library.new("R3TH PRIV                                                                                .gg/pethicial", 5013109572)
 
 local Universal = R3TH:addPage("Universal", 5012540623)
 local Player = Universal:addSection("Player")
