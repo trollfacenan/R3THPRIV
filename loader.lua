@@ -58,35 +58,10 @@ print("[ R3TH PRIV ]: " ..device .." detected")
 
 sendnotification("Script loading, this may take awhile depending on your device.")
 
-function getexploit()
-    local exploit =
-        (KRNL_LOADED and "Krnl") or
-        (IsElectron and "Electron") or
-        (Fluxus and "Fluxus") or
-        ("Unsupported")
-  
-    return exploit
+if getexecutorname() ~= "Krampus" then
+    sendnotification(`{getexecutorname()} isn't fully supported. You may experience some bugs`)
+    sendnotification("It's recommended to use Krampus @ krampus.gg because it's the best executor right now")
 end
-
-print("[ R3TH PRIV ]: " ..getexploit() .." detected")
-if getexploit() == "Unsupported" then
-    print("[ R3TH PRIV ]: Unsupported executor detected, some scripts may not work.")
-    sendnotification("Unsupported executor detected, some scripts may not work.")
-end
-
-request({
-    Url = 'http://127.0.0.1:6463/rpc?v=1',
-    Method = 'POST',
-    Headers = {
-        ['Content-Type'] = 'application/json',
-        Origin = 'https://discord.com'
-    },
-    Body = game:GetService("HttpService"):JSONEncode({
-        cmd = 'INVITE_BROWSER',
-        nonce = game:GetService("HttpService"):GenerateGUID(false),
-        args = {code = "pethicial"}
-    })
-})
 
 if game.PlaceId == (142823291 or 335132309 or 636649648) then
     print("[ R3TH PRIV ]: Game Supported!")
