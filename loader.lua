@@ -63,7 +63,7 @@ if getexecutorname() ~= "Krampus" then
     sendnotification("It's recommended to use Krampus @ krampus.gg because it's the best executor right now")
 end
 
-if game.PlaceId == (142823291 or 335132309 or 636649648) then
+if game.PlaceId == 142823291 or game.GameId == (335132309 or 636649648) then
     print("[ R3TH PRIV ]: Game Supported!")
     loadstring(game:HttpGet('https://raw.githubusercontent.com/R3TH-PRIV/R3THPRIV/main/Games/Murder%20Mystery%202.lua'))()
 elseif game.PlaceId == 7863262550 then
