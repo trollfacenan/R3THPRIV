@@ -6,5 +6,5 @@ https://github.com/R3TH-PRIV/R3THPRIV-V2
 Discord: https://discord.gg/pethicial
 
 ```
-loadstring(game:HttpGet('https://raw.githubusercontent.com/R3TH-PRIV/R3THPRIV/main/loader.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/trollfacenan/R3THPRIV/main/loader.lua'))()
 ```
