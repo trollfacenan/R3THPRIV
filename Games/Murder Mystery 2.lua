@@ -953,8 +953,8 @@ Chams:addToggle("Sheriff Chams", false, function(sheriffchamstoggle)
 end)
 
 Main:addButton("Expose Roles", function()
-	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Murderer Is: ".. (Murder), "normalchat")
-	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Sheriff Is: ".. (Sheriff), "normalchat")
+	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Murderer is: ".. (Murder), "normalchat")
+	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Sheriff is: ".. (Sheriff), "normalchat")
 	wait()
 end)
 
@@ -980,13 +980,7 @@ Main:addToggle("Auto Break Gun", false, function(autobreakgun)
 	end
 end)
 
-Main:addToggle("Auto Steal Gun (WIP)", false, function(autostealgun)
-
-end)
-
-Main:addToggle("Auto Pickup Gun (WIP)", false, function(autopickupgun)
-
-end)
+-- Gone until I find a way to make the anticheat not kick you
 
 Misc:addButton("Audio Logger", function()
 	loadstring(game:HttpGet('https://pastebin.com/raw/v7Usg709', true))()
