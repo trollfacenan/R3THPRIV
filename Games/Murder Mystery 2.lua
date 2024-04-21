@@ -348,7 +348,8 @@ local Gun
 local GunHolderName
 
 function findgun()
-	function findgunfix(v)
+	--trash way to find the gun but still works
+	local function findgunfix(v)
 		if v.Name ~= LocalPlayer.Name then
 			local player = v
 			Gun = player and (player.Backpack:FindFirstChild("Gun") or player.Character:FindFirstChild("Gun"))
@@ -645,18 +646,9 @@ Player:addToggle("Xray", false, function(xray)
 	x(t)
 end)
 
-Player:addButton("Respawn", function()
-	LocalPlayer.Character:WaitForChild("Humanoid").Health = 0
-	wait()
-end)
-
 Player:addButton("Open Console", function()
 	game.StarterGui:SetCore("DevConsoleVisible", true)
 	wait()
-end)
-
-Player:addToggle("Enable Reset", false, function(enablereset)
-	game:GetService("StarterGui"):SetCore("ResetButtonCallback", enablereset)
 end)
 
 if WVryGeXr38ZZtdJWtrBtyeEKdm9Kkweaxm7tnUpuCcH835AQN2aLxV2NeG76kYZuWnCZz4yRr == true then
@@ -688,11 +680,6 @@ ESP:addToggle("Outlines", false, function(names)
 	loadesp()
 	R3THESP.BoxOutline = names
 	R3THESP.NamesOutline = names
-end)
-
-Fling:addDropdown("Select Player", flinglist, function(flingplayerselect)
-	FLINGTARGET = flingplayerselect
-	wait()
 end)
 
 Game:addToggle("Mobile Keyboard", false, function(rtxshaders)
@@ -981,6 +968,10 @@ function autobreakgunloopfix()
 	GunPath.KnifeServer.ShootGun:InvokeServer(1, 0, "AH")
 end
 
+Main:addButton("Break Gun", function()
+	pcall(autobreakgunloopfix)
+end)
+
 Main:addToggle("Auto Break Gun", false, function(autobreakgun)
 	autobreakgunloop = autobreakgun
 	while autobreakgunloop do
@@ -1058,8 +1049,10 @@ World:addToggle("Always Alive Chat", false, function(alwaysalive)
 	end
 end)
 
-World:addToggle("See Dead Chat (removed for now)", false, function(seedeadchat)
-
+World:addToggle("See Dead Chat", false, function(seedeadchat)
+	game.Players:Chat("/join dead")
+	while task.wait(20) do game.Players:Chat("/join dead") end
+	--maybe doesn't work idk
 end)
 
 Visual:addToggle("Infinite Ghost", false, function(infiniteghost)
@@ -1092,135 +1085,31 @@ Visual:addToggle("Delete All Decals", false, function(deletealldecals)
 	removedecals = deletealldecals
 end)
 
-ChromaGuns:addToggle("Loop Drop Guns", false, function(loopdropguns)
-	loopdropgunsloop = loopdropguns
-	while loopdropgunsloop do
-		function loopdropgunsloopfix()
-			game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
-			dropgun()
-			task.wait()
-			clearbackpackguns()
-			wait()
-		end
-		wait()
-		pcall(loopdropgunsloopfix)
-	end
+local rainguns = false
+ChromaGuns:addToggle("Rain Guns", false, function()
+	rainguns = not rainguns
 end)
+while rainguns do
+	game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
+	dropgun()
+	task.wait()
+	clearbackpackguns()
+	task.wait(.1)
+end
 
-ChromaGuns:addToggle("Rain Guns Lobby", false, function(raingunslobby)
-	if raingunslobby == true then
-		lastposgunrain = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-		task.wait()
-		local R3THRAINGUNS = Instance.new("Part",workspace)
-		R3THRAINGUNS.Name = "R3THRAINGUNS"
-		R3THRAINGUNS.Anchored = true
-		R3THRAINGUNS.BottomSurface = Enum.SurfaceType.Smooth
-		R3THRAINGUNS.TopSurface = Enum.SurfaceType.Smooth
-		R3THRAINGUNS.Color = Color3.fromRGB(0, 0, 0)
-		R3THRAINGUNS.Material = Enum.Material.Plastic
-		R3THRAINGUNS.Size = Vector3.new(300, 0, 300)
-		R3THRAINGUNS.CFrame = CFrame.new(-110, 174, 23)
-		R3THRAINGUNS.Transparency = 1
-		R3THRAINGUNS.Parent = workspace
-		wait()
-		looptprainguns = true
-		wait()
-		looptprainguns0 = game:GetService("RunService").Heartbeat:Connect(function()
-			if _G.looptprainguns == true then
-				dropgun()
-			end
-		end)
-		wait()
-		while looptprainguns do
-			wait()
-			if looptprainguns == true then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-110.61995697021484, 178.46054077148438, 24.172264099121094)
-				wait()
-				game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
-				clearbackpackguns()
-			end
-			wait()
-			if looptprainguns == true then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-107.0545425415039, 178.46054077148438, 49.758445739746094)
-				wait()
-				game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
-				clearbackpackguns()
-			end
-			wait()
-			if looptprainguns == true then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-107.48245239257812, 178.32301330566406, -21.168886184692383)
-				wait()
-				game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
-				clearbackpackguns()
-			end
-			wait()
-			if looptprainguns == true then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-66.5235595703125, 178.3394317626953, -6.834407329559326)
-				wait()
-				game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
-				clearbackpackguns()
-			end
-			wait()
-			if looptprainguns == true then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-64.53665924072266, 178.43014526367188, 22.159414291381836)
-				wait()
-				game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
-				clearbackpackguns()
-			end
-			wait()
-			if looptprainguns == true then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-107.0545425415039, 178.46054077148438, 49.758445739746094)
-				wait()
-				game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
-				clearbackpackguns()
-			end
-			wait()
-			if looptprainguns == true then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-76.67523956298828, 178.47299194335938, 46.36599349975586)
-				wait()
-				game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
-				clearbackpackguns()
-			end
-			wait()
-			if looptprainguns == true then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-147.1442108154297, 178.46054077148438, 48.81122589111328)
-				wait()
-				game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
-				clearbackpackguns()
-			end
-			wait()
-			if looptprainguns == true then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-158.49029541015625, 178.46054077148438, 18.649372100830078)
-				wait()
-				game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
-				clearbackpackguns()
-			end
-			wait()
-			if looptprainguns == true then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-151.8859405517578, 178.30340576171875, -8.303387641906738)
-				wait()
-				game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
-				clearbackpackguns()
-			end
-			wait()
-		end
-	end
-	if raingunslobby == false then
-		looptprainguns0:Disconnect()
-		looptprainguns = false
-		task.wait()
-		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(lastposgunrain)
-		wait()
-		for i,v in pairs (workspace:GetDescendants()) do
-			if v.Name == "R3THRAINGUNS" then
-				v:Destroy()
-			end
-		end
-		wait(1)
-		clearbackpackguns()
-		wait()
-	end
+local gunlag = false
+ChromaGuns:addToggle("Lag Server (Fake Gun)", false, function()
+	gunlag = not gunlag
 end)
+while gunlag do
+	task.wait()
+	for i = 1, 98 do
+		game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
+		dropgun()
+		task.wait()
+		clearbackpackguns()
+	end
+end
 
 ChromaGuns:addToggle("Pickup All Guns", false, function(pickupallguns)
 	pickupallgunsloop = pickupallguns
@@ -1329,49 +1218,51 @@ Traps:addToggle("Toggle Place Trap", false, function(toggleplacetrap)
 	end
 end)
 
+local antitraploop = false
 Traps:addToggle("Anti Trap", false, function(antitrap)
-	antitraploop = antitrap
-	while antitraploop do
-		function antitraploopfix()
-			if LocalPlayer.Character:WaitForChild("Humanoid").WalkSpeed == 0.009999999776482582 then
-				LocalPlayer.Character:WaitForChild("Humanoid").WalkSpeed = 16
-			end
-			wait()
-		end
-		wait()
-		pcall(antitraploopfix)
-	end
+	antitraploop = not antitraploop
 end)
+while antitraploop do
+	if LocalPlayer.Character:WaitForChild("Humanoid").WalkSpeed < 15 then
+		LocalPlayer.Character:WaitForChild("Humanoid").WalkSpeed = 16
+	end
+	if LocalPlayer.Character:WaitForChild("HumanoidRootPart").Anchored == true then
+		LocalPlayer.Character:WaitForChild("HumanoidRootPart").Anchored = false
+	end
+	task.wait()
+end
 
 --------------------------------------------------------------------------------------SPRAYPAINT----------------------------------------------------------------------------------------
 Target:addDropdown("Select Player", flinglist, function(targetName)
 	targetUsername = targetName
 end)
 
+local loopresetplayer
+function loopresetallfix()
+	for i, v in game:GetService("Players"):GetPlayers() do
+		if not v.Character then return end
+		if v.Name == LocalPlayer.Name then continue end
+		game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (v.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+	end
+	task.wait()
+end
+
+function loopresetplayerfix()
+	if targetUsername == "All" then
+		task.wait()
+		pcall(loopresetallfix)
+	else
+		targetPlayer = players:FindFirstChild(targetUsername)
+		game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (targetPlayer.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+		task.wait()
+	end
+end
+
 LoopTarget:addToggle("Loop Destroy Player", false, function(loopreset)
-	SprayPaintNotif()
+	if not doeshavespraypaint then SprayPaintNotif() return end
 	loopresetplayer = loopreset
 	while loopresetplayer do
-		function loopresetplayerfix()
-			if targetUsername == "All" then
-				for i,v in pairs(game.Players:GetChildren()) do
-					function loopresetallfix()
-						if v.Name ~= game.Players.LocalPlayer.Name then
-							resetallplayers = players:FindFirstChild(v.Name)
-							game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (resetallplayers.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-						end
-						wait()
-					end
-					wait()
-					pcall(loopresetallloopfix)
-				end
-			else
-				targetPlayer = players:FindFirstChild(targetUsername)
-				game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (targetPlayer.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-				wait()
-			end
-		end
-		wait()
+		task.wait()
 		pcall(loopresetplayerfix)
 	end
 end)
@@ -1430,39 +1321,47 @@ LoopTarget:addToggle("Loop Void Player", false, function(loopvoid)
 	end
 end)
 
-LoopTarget:addToggle("Rain Guns On Player", false, function(raingunsplayer)
-	raingunsplayerloop = raingunsplayer
-	while raingunsplayerloop do
-		function raingunsplayerloopfix()
-			if targetUsername == "All" then
-				for i,v in pairs(game.Players:GetChildren()) do
-					function loopraingunsallloopfix()
-						if v.Name ~= LocalPlayer.Name then
-							LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,8)
-							game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
-							dropgun()
-							wait()
-							clearbackpackguns()
-							wait()
-						end
-					end
-					wait()
-					pcall(loopraingunsallloopfix)
-				end
-			else
-				targetPlayer = players:FindFirstChild(targetUsername)
-				LocalPlayer.Character.HumanoidRootPart.CFrame = targetPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,8)
-				game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
-				dropgun()
-				wait()
-				clearbackpackguns()
-				wait()
-			end 
+function loopraingunsallloopfix()
+	for i, v in game:GetService("Players"):GetPlayers() do
+		game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
+		dropgun()
+		task.wait()
+		clearbackpackguns()
+		task.wait()
+		for a, b in workspace:GetChildren() do
+			if b:IsA("Tool") then
+				b:FindFirstChildWhichIsA("BasePart", true).CFrame = v.Character:GetPivot() + CFrame.new(0, 1.8, 0)
+			end
 		end
-		wait()
-		pcall(raingunsplayerloopfix)
 	end
+end
+function raingunsplayerloopfix()
+	if targetUsername == "All" then
+		task.wait()
+		pcall(loopraingunsallloopfix)
+	else
+		targetPlayer = players:FindFirstChild(targetUsername)
+		game:GetService("ReplicatedStorage").Remotes.Gameplay.FakeGun:FireServer(true)
+		dropgun()
+		task.wait()
+		clearbackpackguns()
+		task.wait()
+		for a, b in workspace:GetChildren() do
+			if b:IsA("Tool") then
+				b:FindFirstChildWhichIsA("BasePart", true).CFrame = targetPlayer.Character:GetPivot() + CFrame.new(0, 1.8, 0)
+			end
+		end
+	end
+end
+
+local raingunsplayerloop = false
+LoopTarget:addToggle("Rain Guns On", false, function(raingunsplayer)
+	raingunsplayerloop = not raingunsplayerloop
 end)
+while raingunsplayerloop do
+	task.wait()
+	pcall(raingunsplayerloopfix)
+end
 
 LoopTarget:addToggle("Blind Player", false, function(blindall)
 	SprayPaintNotif()
@@ -1513,131 +1412,18 @@ LoopTarget:addToggle("Auto Equip Spray Paint", false, function(autoequipspray)
 	end
 end)
 
-FE:addDropdown("Select Player", playerlistfe, function(fetarget)
-	fetargetname = fetarget
-end)
-
-function fepenisfunc()
-	-- Top Penis
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Top, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0,-1,-0.7))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Top, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0,-1,-1))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Top, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0,-1,-1.5))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Top, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0,-1,-2))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(13850207336, Enum.NormalId.Top, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0,-1,-2.5))
-
-	----Bottom Penis
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Bottom, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0,-1.3,-0.5))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Bottom, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0,-1.3,-1))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Bottom, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0,-1.3,-1.5))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Bottom, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0,-1.3,-2))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(13850207336, Enum.NormalId.Bottom, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0,-1.3,-2.5))
-
-	-- Left Penis
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Left, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(-0.15,-1.15,-0.5))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Left, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(-0.15,-1.15,-1))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Left, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(-0.15,-1.15,-1.5))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Left, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(-0.15,-1.15,-2))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(13850207336, Enum.NormalId.Left, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(-0.15,-1.15,-2.5))
-
-	-- Right Penis
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Right, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0.15,-1.15,-0.5))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Right, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0.15,-1.15,-1))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Right, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0.15,-1.15,-1.5))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Right, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0.15,-1.15,-2))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(13850207336, Enum.NormalId.Right, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0.15,-1.15,-2.5))
-
-	-- Front Penis
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(13850207336, Enum.NormalId.Front, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0,-1.15,-2.65))
-
-	-- Left Sack
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Top, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0.5,-1,-0.7))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Front, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0.5,-1.15,-0.85))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Bottom, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0.5,-1.3,-0.7))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Right, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(0.65,-1.15,-0.7))
-
-	-- Right side
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Top, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(-0.5,-1,-0.7))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Front, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(-0.5,-1.15,-0.85))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Bottom, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(-0.5,-1.3,-0.7))
-	game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(12976059241, Enum.NormalId.Left, 0.5, (fepenistarget.Character.HumanoidRootPart), fepenistarget.Character.HumanoidRootPart.CFrame * CFrame.new(-0.65,-1.15,-0.7))
+function antijoinloopfix()
+	for i,v in antijoinlist do
+		local antijoinname = players:FindFirstChild(v)
+		game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (antijoinname.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+		task.wait()
+	end
 end
-
-FE:addToggle("FE Penis", false, function(fepenis)
-	if fepenis == true then
-		SprayPaintNotif()
-		fepenistarget = players:FindFirstChild(LocalPlayer.Name)
-		fepenisloop = true
-		while fepenisloop do
-			function fepenisloopfix()
-				EquipSpray()
-				task.wait(0.4)
-				if fetargetname == "All" then
-					for i,v in pairs(game.Players:GetPlayers()) do
-						fepenistarget = players:FindFirstChild(v.Name)
-						fepenisfunc()
-						task.wait()
-					end
-				else
-					fepenistarget = players:FindFirstChild(fetargetname)
-					fepenisfunc()
-				end
-				task.wait(15)
-			end
-			wait()
-			pcall(fepenisloopfix)
-		end
-	end
-	if fepenis == false then
-		fepenisloop = false
-		wait()
-	end
-end)
-
-FE:addToggle("FE Cum", false, function(fecum)
-	SprayPaintNotif()
-	fecumloop = fecum
-	while fecumloop do
-		function fecumloopfix()
-			for i,v in pairs(game.Players:GetPlayers()) do
-				if v ~= game.Players.LocalPlayer and game.Players.LocalPlayer:DistanceFromCharacter(v.Character.HumanoidRootPart.Position) < 5 then
-					cumtarget = players:FindFirstChild(v.Name)
-					game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(1302869037, Enum.NormalId.Front, 3, (cumtarget.Character.RightHand), cumtarget.Character.RightHand.CFrame)
-					game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(1302869037, Enum.NormalId.Top, 3, (cumtarget.Character.LeftLowerArm), cumtarget.Character.LeftLowerArm.CFrame)
-					game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(1302869037, Enum.NormalId.Top, 3, (cumtarget.Character.RightLowerArm), cumtarget.Character.RightLowerArm.CFrame)
-					game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(1302869037, Enum.NormalId.Back, 3, (cumtarget.Character.LeftUpperArm), cumtarget.Character.LeftUpperArm.CFrame)
-					game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(1302869037, Enum.NormalId.Right, 3, (cumtarget.Character.LowerTorso), cumtarget.Character.LowerTorso.CFrame)
-					game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(1302869037, Enum.NormalId.Left, 3, (cumtarget.Character.LeftLowerLeg), cumtarget.Character.LeftLowerLeg.CFrame)
-					game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(1302869037, Enum.NormalId.Top, 3, (cumtarget.Character.LeftUpperLeg), cumtarget.Character.LeftUpperLeg.CFrame)
-					game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(1302869037, Enum.NormalId.Back, 3, (cumtarget.Character.LeftFoot), cumtarget.Character.LeftFoot.CFrame)
-					game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(1302869037, Enum.NormalId.Front, 3, (cumtarget.Character.RightFoot), cumtarget.Character.RightFoot.CFrame)
-					game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(1302869037, Enum.NormalId.Left, 3, (cumtarget.Character.RightLowerLeg), cumtarget.Character.RightLowerLeg.CFrame)
-					game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(1302869037, Enum.NormalId.Right, 3, (cumtarget.Character.RightUpperLeg), cumtarget.Character.RightUpperLeg.CFrame)
-					game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(1302869037, Enum.NormalId.Left, 3, (cumtarget.Character.UpperTorso), cumtarget.Character.UpperTorso.CFrame)
-					game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(1302869037, Enum.NormalId.Right, 3, (cumtarget.Character.Head), cumtarget.Character.Head.CFrame)
-					game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(1302869037, Enum.NormalId.Front, 3, (cumtarget.Character.Head), cumtarget.Character.Head.CFrame)
-					wait()
-				end
-				wait()
-			end
-			wait()
-		end
-		wait()
-		pcall(fecumloopfix)
-	end
-end)
-
 Antijoin:addToggle("Anti Join", false, function(antijointoggle)
 	SprayPaintNotif()
 	antijoinloop = antijointoggle
 	while antijoinloop do
-		function antijoinloopfix()
-			for i,v in pairs(antijoinlist) do
-				antijoinname = players:FindFirstChild(v)
-				game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (antijoinname.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-				wait()
-			end
-		end
-		wait()
+		task.wait()
 		pcall(antijoinloopfix)
 	end
 end)
@@ -1647,7 +1433,7 @@ Antijoin:addDropdown("Select Player", antijoinlist, function(antijoinletjoin)
 end)
 
 Antijoin:addButton("Let Player Join", function()
-	for i,v in pairs(antijoinlist)do
+	for i,v in antijoinlist do
 		if v == antijoinletjoinname then  
 			table.remove(antijoinlist,i)
 		end
@@ -1655,11 +1441,7 @@ Antijoin:addButton("Let Player Join", function()
 end)
 
 Antijoin:addButton("Clear List", function()
-	for i = 1,12 do
-		for i,v in pairs(antijoinlist) do
-			table.remove(antijoinlist,i)
-		end
-	end
+	table.clear(antijoinlist)
 end)
 
 --------------------------------------------------------------------------------------MULTI KILL----------------------------------------------------------------------------------------
