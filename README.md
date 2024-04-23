@@ -1,7 +1,7 @@
-# R3TH PRIV by pethicial
+# Actively maintained version of R3THPRIV by humanoid
 
-R3TH PRIV V2 in progress
-https://github.com/R3TH-PRIV/R3THPRIV-V2
+Keep in mind that this is only for MM2
+For other games it's recommended to use the normal R3THPRIV because any other games will not be updated here.
 
 Discord: https://discord.gg/pethicial
 
