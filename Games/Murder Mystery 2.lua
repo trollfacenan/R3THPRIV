@@ -3,6 +3,7 @@
 
     Credits:
         pethicial
+        humanoid for making this shitty code optimized and work better
 ]]
 
 --------------------------------------------------------------------------------------R3THPRIV----------------------------------------------------------------------------------------
@@ -29,7 +30,7 @@ for _,obj in game:GetService("Players"):GetDescendants() do
 end
 
 print("[ R3TH PRIV ]: R3TH PRIV MURDER MYSTERY 2 LOADING...")
-local CoreGui = cloneref(game:GetService("CoreGui"))
+local CoreGui = cloneref and cloneref(game:GetService("CoreGui")) or game:GetService("CoreGui")
 
 --------------------------------------------------------------------------------------THEME----------------------------------------------------------------------------------------
 privateProperties = {
@@ -282,7 +283,7 @@ function SpawnEmotes()
 end
 
 function clearbackpackguns()
-	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+	for i,v in game.Players.LocalPlayer.Backpack:GetChildren() do
 		if v.Name ~= "Emotes" then
 			if v.Name ~= "Knife" then
 				if v.Name ~= "Gun" then
@@ -347,26 +348,30 @@ end
 local Gun
 local GunHolderName
 
-function findgun()
-	--trash way to find the gun but still works
-	local function findgunfix(v)
-		if v.Name ~= LocalPlayer.Name then
-			local player = v
-			Gun = player and (player.Backpack:FindFirstChild("Gun") or player.Character:FindFirstChild("Gun"))
-			if Gun ~= nil then
-				print("GunFinder: Success!")
-				GunHolderName = v.Name
-				GunPath = player and (player.Backpack:FindFirstChild("Gun") or player.Character:FindFirstChild("Gun"))
-			end
-		end
-	end
-	local tries = 0
-	for i,v in game.Players:GetPlayers() do
-		tries += 1
+function findmainparent(v, method)
+	local result
+	repeat
+		result = v.Parent
 		task.wait()
-		task.defer(findgunfix, v)
-		if Gun ~= nil then break end
-		if tries == #game.Players:GetPlayers() then print("GunFinder: Failed!") tries = 0 break end
+	until result.Parent == game
+	if method == "FullWay" then
+		return result:GetFullName()
+	elseif method == "Name" then
+		return result.Name
+	elseif method == "Class" then
+		return result.ClassName
+	else
+		return result
+	end
+end
+local GunHolderName
+local GunPath
+function findgun()
+	for i, v in game:GetService("Players"):GetPlayers() do
+		if v.Backpack:FindFirstChild("Gun", true) or v.Character:FindFirstChild("Gun", true) then
+			GunHolderName = v.Name
+			GunPath = v.Backpack:FindFirstChild("Gun", true) or v.Character:FindFirstChild("Gun", true)
+		end
 	end
 end
 
@@ -383,6 +388,13 @@ game:service'Players'.LocalPlayer.Idled:connect(function()
 	end
 end)
 wait()
+
+local ismobile
+for i, v in {"Wave", "Codex", "Delta", "Arceus", "Hydrogen"} do
+	if identifyexecutor():find(v) then
+		ismobile = true
+	end
+end
 
 local flinglist = {}
 local playerlist = {}
@@ -461,9 +473,7 @@ mt.__namecall = newcclosure(function(...)
 	local args = {...}
 
 	if method == 'FireServer' and args[1].Name == 'SayMessageRequest' then 
-		if alwaysalivechat == true then
-			args[3] = "Alive"
-		end
+		args[3] = "Alive"
 		return old.__namecall(unpack(args));
 	end
 	return old.__namecall(...)
@@ -599,24 +609,8 @@ Player:addToggle("Enable Fly", false, function(enablefly)
 	end
 end)
 
-Player:addToggle("Noclip", false, function(noclip)
-	loopnoclip = noclip
-	while loopnoclip do
-		function loopnoclipfix()
-			for a, b in pairs(Workspace:GetChildren()) do
-				if b.Name == LocalPlayer.Name then
-					for i, v in pairs(Workspace[LocalPlayer.Name]:GetChildren()) do
-						if v:IsA("BasePart") then
-							v.CanCollide = false
-						end
-					end 
-				end 
-			end
-			wait()
-		end
-		wait()
-		pcall(loopnoclipfix)
-	end
+Player:addToggle("Noclip (Disabled)", false, function(noclip)
+	sendnotification("Noclip is currently disabled, try again later.") sendnotification("Reason: shitty unoptimized code, gonna be rewritten.")
 end)
 
 
@@ -624,7 +618,7 @@ Player:addToggle("Xray", false, function(xray)
 	local t=false
 
 	local function scan(z,t)
-		for _,i in pairs(z:GetChildren()) do
+		for _,i in z:GetChildren() do
 			if i:IsA("BasePart") and not i.Parent:FindFirstChild("Humanoid") and not i.Parent.Parent:FindFirstChild("Humanoid") then
 				i.LocalTransparencyModifier=t
 			end
@@ -653,11 +647,11 @@ end)
 
 if WVryGeXr38ZZtdJWtrBtyeEKdm9Kkweaxm7tnUpuCcH835AQN2aLxV2NeG76kYZuWnCZz4yRr == true then
 	Player:addTextbox("FOV", 70, function(FOV, focusLost)
-		game:GetService'Workspace'.Camera.FieldOfView = FOV
+		workspace.CurrentCamera.FieldOfView = FOV
 	end)
 else
 	Player:addSlider("FOV", 70, 0, 120, function(FOV)
-		game:GetService'Workspace'.Camera.FieldOfView = FOV
+		workspace.Camera.FieldOfView = FOV
 	end)
 end
 
@@ -682,25 +676,26 @@ ESP:addToggle("Outlines", false, function(names)
 	R3THESP.NamesOutline = names
 end)
 
-Game:addToggle("Mobile Keyboard", false, function(rtxshaders)
-	if rtxshaders == true then
-		loadstring(game:HttpGet(('https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt'),true))()
-		wait()
-	else
-		for i,v in pairs(game.CoreGui:GetChildren()) do
-			if v.Name == "Keyboard gui WarriorRoberr Version" then
-				v:Destroy()
+if ismobile then
+	Game:addToggle("Mobile Keyboard", false, function(rtxshaders)
+		if rtxshaders == true then --wtf
+			loadstring(game:HttpGet(('https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt'),true))()
+			task.wait()
+		else
+			for i,v in CoreGui:GetChildren() do
+				if v.Name == "Keyboard gui WarriorRoberr Version" then
+					v:Destroy()
+				end
 			end
 		end
-		wait()
-	end
-end)
+	end)
+end	
 
 Game:addToggle("Lag Chat", false, function(lagchat)
 	lagchatloop = lagchat
 	while lagchatloop do
 		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("　", "All")
-		wait(3)
+		task.wait(3)
 	end
 end)
 
@@ -714,53 +709,60 @@ Game:addButton("Serverhop", function()
 	wait()
 end)
 
+local trash = not identifyexecutor():find("Krampus")
 local autokillallloop
 function autokillallloopfix()
 	EquipTool()
-	wait()
+	task.wait()
 	local localCharacter = game.Players.LocalPlayer.Character
 	local knife = localCharacter and localCharacter:FindFirstChild("Knife")
-	wait()
+	task.wait()
 	for _, player in game.Players:GetPlayers() do
 		if player ~= game.Players.LocalPlayer then
-			wait()
+			task.wait()
 			local playerCharacter = player.Character
 			local humanoidRootPart = playerCharacter and playerCharacter:FindFirstChild("HumanoidRootPart")
 
-			if humanoidRootPart then
+			if humanoidRootPart and not trash then
 				Stab()
 				firetouchinterest(humanoidRootPart, knife.Handle, 1)
 				firetouchinterest(humanoidRootPart, knife.Handle, 0)
+			elseif humanoidRootPart and trash then
+				Stab()
+				humanoidRootPart:PivotTo(localCharacter.HumanoidRootPart:GetPivot())
 			end
 		end
 	end
-	wait()
+	task.wait()
 end
 --------------------------------------------------------------------------------------COMBAT----------------------------------------------------------------------------------------
 Murderer:addToggle("Auto Kill All", false, function(autokillall)
 	autokillallloop = autokillall
 	while autokillallloop do
-		wait()
+		task.wait()
 		pcall(autokillallloopfix)
 	end
 end)
 
 local knifeauraloop
 function thtrhthtr()
-	for i,v in pairs(game.Players:GetPlayers()) do
+	for i,v in game.Players:GetPlayers() do
 		if v ~= game.Players.LocalPlayer and game.Players.LocalPlayer:DistanceFromCharacter(v.Character.HumanoidRootPart.Position) < kniferangenum then
 			EquipTool()
-			wait()
+			task.wait()
 			local localCharacter = game.Players.LocalPlayer.Character
 			local knife = localCharacter and localCharacter:FindFirstChild("Knife")
-			wait()
+			task.wait()
 			local playerCharacter = v.Character
 			local humanoidRootPart = playerCharacter and playerCharacter:FindFirstChild("HumanoidRootPart")
 
-			if humanoidRootPart then
+			if humanoidRootPart and not trash then
 				Stab()
 				firetouchinterest(humanoidRootPart, knife.Handle, 1)
 				firetouchinterest(humanoidRootPart, knife.Handle, 0)
+			elseif humanoidRootPart and trash then
+				Stab()
+				humanoidRootPart:PivotTo(localCharacter.HumanoidRootPart:GetPivot())
 			end
 		end
 	end
@@ -768,7 +770,7 @@ end
 Murderer:addToggle("Knife Aura", false, function(knifeaura)
 	knifeauraloop = knifeaura
 	while knifeauraloop do
-		wait()
+		task.wait()
 		pcall(thtrhthtr)
 	end
 end)
@@ -835,6 +837,7 @@ Teleports:addButton("Teleport to Map", function()
 end)
 
 Teleports:addButton("Teleport Above Map", function()
+	--might rewrite this shitty code
 	if workspace:FindFirstChild("Bank2") then
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1657.433349609375, 55.1998291015625, -894.1311645507812)
 	else
@@ -864,10 +867,7 @@ Teleports:addButton("Teleport Above Map", function()
 								if workspace:FindFirstChild("MilBase") then
 									game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-3308.32421875, 125.00634765625, 2854.347900390625)
 								else
-									if workspace:FindFirstChild("nSOffice") then
-										game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(360.3828125, 66.00631713867188, 2420.55908203125)
-									else
-										if workspace:FindFirstChild("Office3") then
+									if workspace:FindFirstChild("Office3") then
 											game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(155.65457153320312, 73.00385284423828, -2992.73974609375)
 										else
 											if workspace:FindFirstChild("PoliceStation") then
@@ -912,10 +912,11 @@ Teleports:addDropdown("Teleport to Player", playerlist, function(teleporttoplaye
 	LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(tptoplayer.Character:WaitForChild("HumanoidRootPart").Position)
 end)
 
-Map:addButton("Remove Barriers broken", function() -------------------------------- FIX
+--[[Map:addButton("Remove Barriers broken", function()
 
-end)
+end)]]
 
+--soon will be fixed
 Chams:addToggle("Player Chams", false, function(playerchams)
 	playerchamsloop = playerchams
 	while playerchamsloop do
@@ -955,7 +956,6 @@ end)
 Main:addButton("Expose Roles", function()
 	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Murderer is: ".. (Murder), "normalchat")
 	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Sheriff is: ".. (Sheriff), "normalchat")
-	wait()
 end)
 
 Main:addButton("Fake Gun", function()
@@ -965,22 +965,25 @@ end)
 local autobreakgunloop
 function autobreakgunloopfix()
 	findgun()
-	GunPath.KnifeServer.ShootGun:InvokeServer(1, 0, "AH")
+	if GunPath~= nil then GunPath.KnifeServer.ShootGun:InvokeServer(1, 0, "AH") sendnotification("Possibly broke gun") end
 end
 
 Main:addButton("Break Gun", function()
 	pcall(autobreakgunloopfix)
 end)
 
+local mapnames = {"ResearchFacility","Factory","MilBase","BioLab","Workplace","Office3","Bank2","Hospital3","Hotel2","Hotel","Mansion2","House2"}
 Main:addToggle("Auto Break Gun", false, function(autobreakgun)
 	autobreakgunloop = autobreakgun
 	while autobreakgunloop do
 		task.wait()
-		pcall(autobreakgunloopfix)
+		for i, v in mapnames do if workspace:FindFirstChild(v) then pcall(autobreakgunloopfix) end end
 	end
 end)
 
--- Gone until I find a way to make the anticheat not kick you
+Main:addToggle("Auto Steal Gun (Off)", false, function(autostealgun)
+if autostealgun then sendnotification("Currently disabled, please wait until there's a bypass for the new anticheat.") end
+end)
 
 Misc:addButton("Audio Logger", function()
 	loadstring(game:HttpGet('https://pastebin.com/raw/v7Usg709', true))()
@@ -1003,31 +1006,32 @@ Misc:addButton("Stop Viewing", function()
 end)
 
 --------------------------------------------------------------------------------------TOGGLES----------------------------------------------------------------------------------------
+function loopinteractiveloopfix()
+	if workspace:FindFirstChild("Bank2") then
+		workspace.Bank2.Interactive.VaultSystem.InteractiveBox.Interact:FireServer()
+	else
+		if workspace:FindFirstChild("Factory") then
+			workspace.Factory.LorryDoor.InteractiveBox.Interact:FireServer()
+		else
+			if workspace:FindFirstChild("MilBase") then
+				workspace.MilBase.Door.InteractiveBox.Interact:FireServer()
+			else
+				if workspace:FindFirstChild("ResearchFacility") then
+					workspace.ResearchFacility.Interactive.ScanSystem.Scanner.InteractiveBox.Interact:FireServer()
+					workspace.ResearchFacility.Interactive.SirenSystem.InteractiveBox.Interact:FireServer()
+					workspace.ResearchFacility.Interactive.CloningSystem.InteractiveBox.Interact:FireServer()
+					workspace.ResearchFacility.Interactive.GarageSystem.InteractiveBox.Interact:FireServer()
+				end
+			end
+		end
+	end
+	task.wait()
+end
+local loopinteractiveloop
 World:addToggle("Loop Interactive", false, function(loopinteractive)
 	loopinteractiveloop = loopinteractive
 	while loopinteractiveloop do
-		function loopinteractiveloopfix()
-			if workspace:FindFirstChild("Bank2") then
-				workspace.Bank2.Interactive.VaultSystem.InteractiveBox.Interact:FireServer()
-			else
-				if workspace:FindFirstChild("Factory") then
-					workspace.Factory.LorryDoor.InteractiveBox.Interact:FireServer()
-				else
-					if workspace:FindFirstChild("MilBase") then
-						workspace.MilBase.Door.InteractiveBox.Interact:FireServer()
-					else
-						if workspace:FindFirstChild("ResearchFacility") then
-							workspace.ResearchFacility.Interactive.ScanSystem.Scanner.InteractiveBox.Interact:FireServer()
-							workspace.ResearchFacility.Interactive.SirenSystem.InteractiveBox.Interact:FireServer()
-							workspace.ResearchFacility.Interactive.CloningSystem.InteractiveBox.Interact:FireServer()
-							workspace.ResearchFacility.Interactive.GarageSystem.InteractiveBox.Interact:FireServer()
-						end
-					end
-				end
-			end
-			wait()
-		end
-		wait()
+		task.wait()
 		pcall(loopinteractiveloopfix)
 	end
 end)
@@ -1044,9 +1048,7 @@ World:addToggle("Always Alive Chat", false, function(alwaysalive)
 end)
 
 World:addToggle("See Dead Chat", false, function(seedeadchat)
-	game.Players:Chat("/join dead")
-	while task.wait(20) do game.Players:Chat("/join dead") end
-	--maybe doesn't work idk
+	game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/join dead", "normalchat")
 end)
 
 Visual:addToggle("Infinite Ghost", false, function(infiniteghost)
@@ -1062,7 +1064,7 @@ end)
 Visual:addToggle("Improve FPS", false, function(improvefps)
 	improvefpsloop = improvefps
 	while improvefpsloop do
-		for i,v in pairs (workspace:GetDescendants()) do
+		for i,v in workspace:GetDescendants() do
 			if v.Name == "Pet" then
 				v:Destroy()
 			elseif v.Name == "KnifeDisplay" then
@@ -1071,7 +1073,7 @@ Visual:addToggle("Improve FPS", false, function(improvefps)
 				v:Destroy()
 			end
 		end
-		wait(10)
+		task.wait(10)
 	end
 end)
 
@@ -1171,6 +1173,7 @@ Trading:addToggle("Force Trade All", false, function(forcetradeall)
 end)
 
 Trading:addToggle("Hide TradeGUI", false, function(hidetradegui)
+	--Optimization here later aswell
 	hidetradeguiloop = true
 	while hidetradeguiloop do
 		function hidetradeguiloopfix()
@@ -1443,6 +1446,7 @@ Mutlikill1:addDropdown("Select Player", playerlist, function(Name1)
 	targetUsername1 = Name1
 end)
 
+--Huge optimization soon
 Mutlikill1:addToggle("Loop Destroy Player", false, function(loopreset1)
 	SprayPaintNotif()
 	loopresetplayer1 = loopreset1
@@ -1677,7 +1681,7 @@ Settings:addToggle("UI Toggle Button", false, function(uitogglebutton)
 	if uitogglebutton == false then
 		r3thtoggleui = false
 		task.wait()
-		for i,v in game.CoreGui:GetDescendants() do
+		for i,v in CoreGui:GetDescendants() do
 			if v.Name == "R3THTOGGLEBUTTON" then
 				v:Destroy()
 			end
@@ -1712,8 +1716,8 @@ while roleupdater do
 				Hero = i
 			end
 		end
-		wait(1)
+		task.wait(1)
 	end
-	wait()
+	task.wait()
 	task.defer(roleupdaterfix)
 end
