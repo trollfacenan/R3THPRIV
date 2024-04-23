@@ -3,8 +3,19 @@
 
     Credits:
         pethicial
-        humanoid for making this shitty code optimized and work better
+        humanoid for fixing the shitty code
 ]]
+
+--[[TODO:
+Rewrite shitty teleport above map code
+Optimize multi-kill - DONE
+Cloneref just incase - DONE
+Remove Barriers
+Fix chams
+Add noclip back
+]]
+
+--Open a pull request if there are any bugs/errors
 
 --------------------------------------------------------------------------------------R3THPRIV----------------------------------------------------------------------------------------
 repeat task.wait() until game:IsLoaded()
@@ -89,13 +100,11 @@ local Settings0 = R3TH:addPage("Settings", 5012544372)
 local Settings = Settings0:addSection("Settings")
 local Credits = Settings0:addSection("Credits")
 
-local Players = game:GetService("Players")
-local Workspace = game:GetService("Workspace")
-local StarterGui = game:GetService("StarterGui")
+local Players = cloneref and cloneref(game:GetService("Players")) or game:GetService("Players")
+Workspace = workspace
+local StarterGui = cloneref and cloneref(game:GetService("StarterGui"))
 local LocalPlayer = Players.LocalPlayer
-local HttpService = game:GetService("HttpService")
-local players = game:GetService("Players")
-local ReplicatedStorage = game:GetService('ReplicatedStorage')
+local ReplicatedStorage = cloneref and cloneref(game:GetService('ReplicatedStorage'))
 local N=game:GetService("VirtualInputManager")
 
 local mt = getrawmetatable(game);
@@ -118,12 +127,15 @@ local bv
 local bav
 local cam
 local flying
-local p = game.Players.LocalPlayer
+local p = Players.LocalPlayer
 local buttons = {W = false, S = false, A = false, D = false, Moving = false}
 
 --------------------------------------------------------------------------------------FUNCTIONS----------------------------------------------------------------------------------------
 function toggleui()
 	wait()
+	if CoreGui:FindFirstChild("R3THTOGGLEBUTTON") then
+		return
+	end
 	local Toggle = false
 
 	local R3THTOGGLEBUTTON = Instance.new("ScreenGui")
@@ -132,7 +144,7 @@ function toggleui()
 	local UICorner_2 = Instance.new("UICorner")
 
 	R3THTOGGLEBUTTON.Name = "R3THTOGGLEBUTTON"
-	R3THTOGGLEBUTTON.Parent = game.CoreGui
+	R3THTOGGLEBUTTON.Parent = CoreGui
 
 	Button.Name = "Button"
 	Button.Parent = R3THTOGGLEBUTTON
@@ -154,20 +166,8 @@ function toggleui()
 	UICorner_2.Parent = Button
 
 	Button.MouseButton1Click:connect(function()
-		Toggle = not Toggle
+		R3TH:toggle()
 	end)
-
-	while r3thtoggleui do
-		function toggleuifix()
-			if Toggle then
-				Toggle = false
-				R3TH:toggle()
-				wait()
-			end
-		end
-		wait()
-		pcall(toggleuifix)
-	end
 end
 
 function sendnotification(notificationmessage)
@@ -380,13 +380,14 @@ function dropgun()
 end
 
 --------------------------------------------------------------------------------------EXTRA----------------------------------------------------------------------------------------
-local VirtualUser = game:service'VirtualUser'
-game:service'Players'.LocalPlayer.Idled:connect(function()
-	if antiafk == true then
-		VirtualUser:CaptureController()
-		VirtualUser:ClickButton2(Vector2.new())
+for _, connectionInfo in getconnections(Players.LocalPlayer.Idled) do
+	for _, name in { "Disable", "Disconnect" } do
+		if connectionInfo[name] then
+			connectionInfo[name](connectionInfo)
+			break
+		end
 	end
-end)
+end
 wait()
 
 local ismobile
@@ -609,9 +610,9 @@ Player:addToggle("Enable Fly", false, function(enablefly)
 	end
 end)
 
-Player:addToggle("Noclip (Disabled)", false, function(noclip)
-	sendnotification("Noclip is currently disabled, try again later.") sendnotification("Reason: shitty unoptimized code, gonna be rewritten.")
-end)
+--[[Player:addToggle("Noclip", false, function(noclip)
+	fix
+end)]]
 
 
 Player:addToggle("Xray", false, function(xray)
@@ -620,7 +621,7 @@ Player:addToggle("Xray", false, function(xray)
 	local function scan(z,t)
 		for _,i in z:GetChildren() do
 			if i:IsA("BasePart") and not i.Parent:FindFirstChild("Humanoid") and not i.Parent.Parent:FindFirstChild("Humanoid") then
-				i.LocalTransparencyModifier=t
+				i.LocalTransparencyModifier=0.5
 			end
 			scan(i,t)
 		end
@@ -641,8 +642,7 @@ Player:addToggle("Xray", false, function(xray)
 end)
 
 Player:addButton("Open Console", function()
-	game.StarterGui:SetCore("DevConsoleVisible", true)
-	wait()
+	StarterGui:SetCore("DevConsoleVisible", true)
 end)
 
 if WVryGeXr38ZZtdJWtrBtyeEKdm9Kkweaxm7tnUpuCcH835AQN2aLxV2NeG76kYZuWnCZz4yRr == true then
@@ -651,7 +651,7 @@ if WVryGeXr38ZZtdJWtrBtyeEKdm9Kkweaxm7tnUpuCcH835AQN2aLxV2NeG76kYZuWnCZz4yRr == 
 	end)
 else
 	Player:addSlider("FOV", 70, 0, 120, function(FOV)
-		workspace.Camera.FieldOfView = FOV
+		workspace.CurrentCamera.FieldOfView = FOV
 	end)
 end
 
@@ -678,7 +678,7 @@ end)
 
 if ismobile then
 	Game:addToggle("Mobile Keyboard", false, function(rtxshaders)
-		if rtxshaders == true then --wtf
+		if rtxshaders == true then
 			loadstring(game:HttpGet(('https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt'),true))()
 			task.wait()
 		else
@@ -837,7 +837,6 @@ Teleports:addButton("Teleport to Map", function()
 end)
 
 Teleports:addButton("Teleport Above Map", function()
-	--might rewrite this shitty code
 	if workspace:FindFirstChild("Bank2") then
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1657.433349609375, 55.1998291015625, -894.1311645507812)
 	else
@@ -894,8 +893,7 @@ Teleports:addButton("Teleport Above Map", function()
 				end
 			end
 		end
-	end
-end)
+	end)
 
 Teleports:addButton("Teleport To Murderer", function()
 	tptoplayer = players:FindFirstChild(Murder)
@@ -914,9 +912,8 @@ end)
 
 --[[Map:addButton("Remove Barriers broken", function()
 
-end)]]
+end)
 
---soon will be fixed
 Chams:addToggle("Player Chams", false, function(playerchams)
 	playerchamsloop = playerchams
 	while playerchamsloop do
@@ -951,11 +948,12 @@ Chams:addToggle("Sheriff Chams", false, function(sheriffchamstoggle)
 		sheriffchams = false
 		wait()
 	end
-end)
+end)]]
 
 Main:addButton("Expose Roles", function()
-	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Murderer is: ".. (Murder), "normalchat")
-	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Sheriff is: ".. (Sheriff), "normalchat")
+	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Murderer Is: ".. (Murder), "normalchat")
+	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Sheriff Is: ".. (Sheriff), "normalchat")
+	wait()
 end)
 
 Main:addButton("Fake Gun", function()
@@ -977,7 +975,11 @@ Main:addToggle("Auto Break Gun", false, function(autobreakgun)
 	autobreakgunloop = autobreakgun
 	while autobreakgunloop do
 		task.wait()
-		for i, v in mapnames do if workspace:FindFirstChild(v) then pcall(autobreakgunloopfix) end end
+		for i, v in mapnames do 
+			if workspace:FindFirstChild(v) then 
+				pcall(autobreakgunloopfix)
+			end
+		end
 	end
 end)
 
@@ -1173,7 +1175,6 @@ Trading:addToggle("Force Trade All", false, function(forcetradeall)
 end)
 
 Trading:addToggle("Hide TradeGUI", false, function(hidetradegui)
-	--Optimization here later aswell
 	hidetradeguiloop = true
 	while hidetradeguiloop do
 		function hidetradeguiloopfix()
@@ -1446,18 +1447,14 @@ Mutlikill1:addDropdown("Select Player", playerlist, function(Name1)
 	targetUsername1 = Name1
 end)
 
---Huge optimization soon
 Mutlikill1:addToggle("Loop Destroy Player", false, function(loopreset1)
-	SprayPaintNotif()
 	loopresetplayer1 = loopreset1
 	while loopresetplayer1 do
-		function loopreserplayer1fix()
-			targetPlayer1 = players:FindFirstChild(targetUsername1)
-			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (targetPlayer1.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-			wait()
-		end
-		wait()
-		pcall(loopreserplayer1fix)
+		pcall(function()
+			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (game:GetService("Players"):FindFirstChild(targetUsername1).Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+		end)
+		task.wait()
+		if not loopresetplayer1 then break end
 	end
 end)
 
@@ -1466,16 +1463,13 @@ Mutlikill2:addDropdown("Select Player", playerlist, function(Name2)
 end)
 
 Mutlikill2:addToggle("Loop Destroy Player", false, function(loopreset2)
-	SprayPaintNotif()
 	loopresetplayer2 = true
 	while loopresetplayer2 do
-		function loopreserplayer2fix()
-			targetPlayer2 = players:FindFirstChild(targetUsername2)
-			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (targetPlayer2.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-			wait()
-		end
-		wait()
-		pcall(loopreserplayer2fix)
+		pcall(function()
+			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (game:GetService("Players"):FindFirstChild(targetUsername2).Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+		end)
+		task.wait()
+		if not loopresetplayer2 then break end
 	end
 end)
 
@@ -1485,16 +1479,13 @@ Mutlikill3:addDropdown("Select Player", playerlist, function(Name3)
 end)
 
 Mutlikill3:addToggle("Loop Destroy Player", false, function(loopreset3)
-	SprayPaintNotif()
 	loopresetplayer3 = loopreset3
 	while loopresetplayer3 do
-		function loopreserplayer3fix()
-			targetPlayer3 = players:FindFirstChild(targetUsername3)
-			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (targetPlayer3.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-			wait()
-		end
-		wait()
-		pcall(loopreserplayer3fix)
+		pcall(function()
+			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (game:GetService("Players"):FindFirstChild(targetUsername3).Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+		end)
+		task.wait()
+		if not loopresetplayer3 then break end
 	end
 end)
 
@@ -1503,16 +1494,13 @@ Mutlikill4:addDropdown("Select Player", playerlist, function(Name4)
 end)
 
 Mutlikill4:addToggle("Loop Destroy Player", false, function(loopreset4)
-	SprayPaintNotif()
 	loopresetplayer4 = loopreset4
 	while loopresetplayer4 do
-		function loopreserplayer4fix()
-			targetPlayer4 = players:FindFirstChild(targetUsername4)
-			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (targetPlayer4.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-			wait()
-		end
-		wait()
-		pcall(loopreserplayer4fix)
+		pcall(function()
+			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (game:GetService("Players"):FindFirstChild(targetUsername4).Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+		end)
+		task.wait()
+		if not loopresetplayer4 then break end
 	end
 end)
 
@@ -1521,16 +1509,13 @@ Mutlikill5:addDropdown("Select Player", playerlist, function(Name5)
 end)
 
 Mutlikill5:addToggle("Loop Destroy Player", false, function(loopreset5)
-	SprayPaintNotif()
 	loopresetplayer5 = loopreset5
 	while loopresetplayer5 do
-		function loopreserplayer5fix()
-			targetPlayer5 = players:FindFirstChild(targetUsername5)
-			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (targetPlayer5.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-			wait()
-		end
-		wait()
-		pcall(loopreserplayer5fix)
+		pcall(function()
+			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (game:GetService("Players"):FindFirstChild(targetUsername5).Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+		end)
+		task.wait()
+		if not loopresetplayer5 then break end
 	end
 end)
 
@@ -1539,16 +1524,13 @@ Mutlikill6:addDropdown("Select Player", playerlist, function(Name6)
 end)
 
 Mutlikill6:addToggle("Loop Destroy Player", false, function(loopreset6)
-	SprayPaintNotif()
 	loopresetplayer6 = true
 	while loopresetplayer6 do
-		function loopreserplayer6fix()
-			targetPlayer6 = players:FindFirstChild(targetUsername6)
-			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (targetPlayer6.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-			wait()
-		end
-		wait()
-		pcall(loopreserplayer6fix)
+		pcall(function()
+			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (game:GetService("Players"):FindFirstChild(targetUsername6).Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+		end)
+		task.wait()
+		if not loopresetplayer6 then break end
 	end
 end)
 
@@ -1557,16 +1539,13 @@ Mutlikill7:addDropdown("Select Player", playerlist, function(Name7)
 end)
 
 Mutlikill7:addToggle("Loop Destroy Player", false, function(loopreset7)
-	SprayPaintNotif()
 	loopresetplayer7 = loopreset7
 	while loopresetplayer7 do
-		function loopreserplayer7fix()
-			targetPlayer7 = players:FindFirstChild(targetUsername7)
-			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (targetPlayer7.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-			wait()
-		end
-		wait()
-		pcall(loopreserplayer7fix)
+		pcall(function()
+			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (game:GetService("Players"):FindFirstChild(targetUsername7).Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+		end)
+		task.wait()
+		if not loopresetplayer7 then break end
 	end
 end)
 
@@ -1575,16 +1554,13 @@ Mutlikill8:addDropdown("Select Player", playerlist, function(Name8)
 end)
 
 Mutlikill8:addToggle("Loop Destroy Player", false, function(loopreset8)
-	SprayPaintNotif()
 	loopresetplayer8 = loopreset8
 	while loopresetplayer8 do
-		function loopreserplayer8fix()
-			targetPlayer8 = players:FindFirstChild(targetUsername8)
-			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (targetPlayer8.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-			wait()
-		end
-		wait()
-		pcall(loopreserplayer8fix)
+		pcall(function()
+			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (game:GetService("Players"):FindFirstChild(targetUsername8).Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+		end)
+		task.wait()
+		if not loopresetplayer8 then break end
 	end
 end)
 
@@ -1593,16 +1569,13 @@ Mutlikill9:addDropdown("Select Player", playerlist, function(Name9)
 end)
 
 Mutlikill9:addToggle("Loop Destroy Player", false, function(loopreset9)
-	SprayPaintNotif()
 	loopresetplayer9 = loopreset9
 	while loopresetplayer9 do
-		function loopreserplayer9fix()
-			targetPlayer9 = players:FindFirstChild(targetUsername9)
-			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (targetPlayer9.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-			wait()
-		end
-		wait()
-		pcall(loopreserplayer9fix)
+		pcall(function()
+			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (game:GetService("Players"):FindFirstChild(targetUsername9).Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+		end)
+		task.wait()
+		if not loopresetplayer9 then break end
 	end
 end)
 
@@ -1611,16 +1584,13 @@ Mutlikill10:addDropdown("Select Player", playerlist, function(Name10)
 end)
 
 Mutlikill10:addToggle("Loop Destroy Player", false, function(loopreset10)
-	SprayPaintNotif()
 	loopresetplayer10 = loopreset10
 	while loopresetplayer10 do
-		function loopreserplayer10fix()
-			targetPlayer10 = players:FindFirstChild(targetUsername10)
-			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (targetPlayer10.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-			wait()
-		end
-		wait()
-		pcall(loopreserplayer10fix)
+		pcall(function()
+			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (game:GetService("Players"):FindFirstChild(targetUsername10).Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+		end)
+		task.wait()
+		if not loopresetplayer10 then break end
 	end
 end)
 
@@ -1629,16 +1599,13 @@ Mutlikill11:addDropdown("Select Player", playerlist, function(Name11)
 end)
 
 Mutlikill11:addToggle("Loop Destroy Player", false, function(loopreset11)
-	SprayPaintNotif()
 	loopresetplayer11 = loopreset11
 	while loopresetplayer11 do
-		function loopreserplayer11fix()
-			targetPlayer11 = players:FindFirstChild(targetUsername11)
-			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (targetPlayer11.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-			wait()
-		end
-		wait()
-		pcall(loopreserplayer11fix)
+		pcall(function()
+			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (game:GetService("Players"):FindFirstChild(targetUsername11).Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+		end)
+		task.wait()
+		if not loopresetplayer11 then break end
 	end
 end)
 
@@ -1647,16 +1614,13 @@ Mutlikill12:addDropdown("Select Player", playerlist, function(Name12)
 end)
 
 Mutlikill12:addToggle("Loop Destroy Player", false, function(loopreset12)
-	SprayPaintNotif()
 	loopresetplayer12 = loopreset12
 	while loopresetplayer12 do
-		function loopreserplayer12fix()
-			targetPlayer12 = players:FindFirstChild(targetUsername12)
-			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (targetPlayer12.Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
-			wait()
-		end
-		wait()
-		pcall(loopreserplayer12fix)
+		pcall(function()
+			game:GetService("Players").LocalPlayer.Character.SprayPaint.Remote:FireServer(0, Enum.NormalId.Top, 2048, (game:GetService("Players"):FindFirstChild(targetUsername12).Character.HumanoidRootPart), CFrame.new(8999999488, -8999999488, 8999999488) * CFrame.Angles(-0, 0, -0))
+		end)
+		task.wait()
+		if not loopresetplayer12 then break end
 	end
 end)
 
@@ -1681,7 +1645,7 @@ Settings:addToggle("UI Toggle Button", false, function(uitogglebutton)
 	if uitogglebutton == false then
 		r3thtoggleui = false
 		task.wait()
-		for i,v in CoreGui:GetDescendants() do
+		for i,v in game.CoreGui:GetDescendants() do
 			if v.Name == "R3THTOGGLEBUTTON" then
 				v:Destroy()
 			end
@@ -1716,8 +1680,8 @@ while roleupdater do
 				Hero = i
 			end
 		end
-		task.wait(1)
+		wait(1)
 	end
-	task.wait()
+	wait()
 	task.defer(roleupdaterfix)
 end
