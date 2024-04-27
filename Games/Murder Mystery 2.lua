@@ -32,6 +32,8 @@ if T6FVH3SyPgXtYuZAzQCRJU7Ms2m5b9rGNLhkcnevfqDdKxB then
 	return
 end
 
+local wait,spawn,delay = task.wait,task.spawn,task.delay
+
 getgenv().T6FVH3SyPgXtYuZAzQCRJU7Ms2m5b9rGNLhkcnevfqDdKxB = true
 
 for _,obj in game:GetService("Players"):GetDescendants() do
@@ -251,7 +253,7 @@ function UpdateHighlights()
 end	
 
 function IsAlive(Player)
-	for i, v in pairs(roles) do
+	for i, v in roles do
 		if Player.Name == i then
 			if not v.Killed and not v.Dead then
 				return true
@@ -263,7 +265,7 @@ function IsAlive(Player)
 end
 
 function refreshchams()
-	for i,v in pairs (workspace:GetDescendants()) do
+	for i,v in workspace:GetDescendants() do
 		if v.Name == "Highlight" then
 			v:Destroy()
 		end
@@ -380,13 +382,8 @@ function dropgun()
 end
 
 --------------------------------------------------------------------------------------EXTRA----------------------------------------------------------------------------------------
-for _, connectionInfo in getconnections(Players.LocalPlayer.Idled) do
-	for _, name in { "Disable", "Disconnect" } do
-		if connectionInfo[name] then
-			connectionInfo[name](connectionInfo)
-			break
-		end
-	end
+for i, v in getconnections(Players.LocalPlayer.Idled) do
+	if v["Disable"] then v:Disable() else --[[Will not disconnect to avoid detections]] end
 end
 wait()
 
@@ -709,7 +706,6 @@ Game:addButton("Serverhop", function()
 	wait()
 end)
 
-local trash = not identifyexecutor():find("Krampus")
 local autokillallloop
 function autokillallloopfix()
 	EquipTool()
@@ -723,13 +719,10 @@ function autokillallloopfix()
 			local playerCharacter = player.Character
 			local humanoidRootPart = playerCharacter and playerCharacter:FindFirstChild("HumanoidRootPart")
 
-			if humanoidRootPart and not trash then
+			if humanoidRootPart then
 				Stab()
 				firetouchinterest(humanoidRootPart, knife.Handle, 1)
 				firetouchinterest(humanoidRootPart, knife.Handle, 0)
-			elseif humanoidRootPart and trash then
-				Stab()
-				humanoidRootPart:PivotTo(localCharacter.HumanoidRootPart:GetPivot())
 			end
 		end
 	end
@@ -756,13 +749,10 @@ function thtrhthtr()
 			local playerCharacter = v.Character
 			local humanoidRootPart = playerCharacter and playerCharacter:FindFirstChild("HumanoidRootPart")
 
-			if humanoidRootPart and not trash then
+			if humanoidRootPart then
 				Stab()
 				firetouchinterest(humanoidRootPart, knife.Handle, 1)
 				firetouchinterest(humanoidRootPart, knife.Handle, 0)
-			elseif humanoidRootPart and trash then
-				Stab()
-				humanoidRootPart:PivotTo(localCharacter.HumanoidRootPart:GetPivot())
 			end
 		end
 	end
@@ -800,14 +790,14 @@ end)
 
 Innocent:addDropdown("Fake Die", {"Lay On Back", "Sit Down"}, function(fakedie)
 	if fakedie == "Lay On Back" then
-		local Human = game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
+		local Human = Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
 		if not Human then
 			return
 		end
 		Human.Sit = true
 		task.wait(.1)
 		Human.RootPart.CFrame = Human.RootPart.CFrame * CFrame.Angles(math.pi * .5, 0, 0)
-		for _, v in ipairs(Human:GetPlayingAnimationTracks()) do
+		for _, v in Human:GetPlayingAnimationTracks() do
 			v:Stop()
 		end
 		wait()
