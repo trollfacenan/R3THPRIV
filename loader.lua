@@ -32,6 +32,8 @@ function sendnotification(notificationmessage)
         )
     end
 end
+sendnotification("This script is discontinued")
+sendnotification("Get Eclipse Hub at ify.ac/1DTy.")
 
 if zac5mDuh2AXjsBebYVg6ZSMEf4yxQkw8dRLNGKHF7J9CPT3qWp then
     print("[ R3TH PRIV ]: Script already executed, if your having any problems join discord.gg/pethicial for support.")
