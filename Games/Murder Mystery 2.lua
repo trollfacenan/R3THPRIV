@@ -7,16 +7,6 @@
         Infinite Yield developers for some stuff
 ]]
 
---[[TODO:
-Rewrite shitty teleport above map code
-Optimize multi-kill - DONE
-Cloneref just incase - DONE
-Remove Barriers
-Fix chams -- possibly done, not tested
-Add noclip back - DONE
-Switch to dropdowns instead of using "multi kill 1, multi kill 2, etc."
-]]
-
 --Open a pull request if there are any bugs/errors
 
 --------------------------------------------------------------------------------------R3THPRIV----------------------------------------------------------------------------------------
@@ -189,6 +179,7 @@ function sendnotification(notificationmessage)
 		)
 	end
 end
+sendnotification("This script is discontinued")
 
 function loadesp()
 	if loadespenabled ~= true then
