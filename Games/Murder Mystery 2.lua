@@ -179,7 +179,6 @@ function sendnotification(notificationmessage)
 		)
 	end
 end
-sendnotification("This script is discontinued")
 
 function loadesp()
 	if loadespenabled ~= true then
