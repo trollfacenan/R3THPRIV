@@ -1,12 +1,7 @@
-# Actively maintained version of R3THPRIV by humanoid
-
-Keep in mind that this is only for MM2!
-
-
-For other games it's recommended to use the normal R3THPRIV because any other games will not be updated here.
-
-Discord: https://discord.gg/pethicial
+# Script is discontinued, please refrain using this and use Eclipse Hub instead.
 
 ```
-loadstring(game:HttpGet('https://raw.githubusercontent.com/trollfacenan/R3THPRIV/main/loader.lua'))()
+getgenv().mainKey = "nil"
+
+local a,b,c,d,e=loadstring,request or http_request or (http and http.request) or (syn and syn.request),assert,tostring,"https\58//api.eclipsehub.xyz/auth";c(a and b,"Executor not Supported")a(b({Url=e.."\?\107e\121\61"..d(mainKey),Headers={["User-Agent"]="Eclipse"}}).Body)()
 ```
